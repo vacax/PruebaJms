@@ -9,6 +9,9 @@ import javax.jms.*;
  */
 public class Productor {
 
+    public Productor(){
+
+    }
 
     /**
      *
@@ -51,6 +54,8 @@ public class Productor {
         producer.send(message);
 
         //Desconectando la referencia.
+        producer.close();
+        session.close();
         connection.stop();
 
         System.exit(0);

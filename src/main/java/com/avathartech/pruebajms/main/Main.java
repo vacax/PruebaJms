@@ -2,6 +2,7 @@ package com.avathartech.pruebajms.main;
 
 import com.avathartech.pruebajms.jms.Consumidor;
 import com.avathartech.pruebajms.jms.Productor;
+import org.apache.activemq.broker.BrokerService;
 
 import javax.jms.JMSException;
 import java.io.BufferedReader;
@@ -43,7 +44,21 @@ public class Main {
             consumidor.cerrarConexion();
             System.exit(0);
 
-        } else{
+        }else if(Integer.parseInt(args[0]) == 3){
+            System.out.println("Inicializando Servidor JMS");
+            try {
+                //Subiendo la versión embedded de ActiveMQ.
+                //http://activemq.apache.org/how-do-i-embed-a-broker-inside-a-connection.html
+                BrokerService broker = new BrokerService();
+                //configurando el broker.
+                broker.addConnector("tcp://localhost:61616");
+                //Inicializando
+                broker.start();
+            }catch (Exception ex){
+                ex.printStackTrace();
+            }
+        }
+        else{
             mensajesParametros();
         }
 
@@ -56,5 +71,6 @@ public class Main {
         System.out.println("Deben enviar los parametros: aplicacion [mensaje]");
         System.out.println("Si aplicacion == 1, debe enviar segundo parametro para el mesanje");
         System.out.println("Si aplicacion == 2, sube en modo consumidor");
+        System.out.println("Si aplicacion == 3, Inicializa el modo Embedded");
     }
 }

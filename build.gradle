@@ -14,7 +14,10 @@ repositories {
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.11'
-    compile 'org.apache.activemq:activemq-client:5.11.1'
+    //compile 'org.apache.activemq:activemq-client:5.11.1'
+    // https://mvnrepository.com/artifact/org.apache.activemq/activemq-all
+    compile group: 'org.apache.activemq', name: 'activemq-all', version: '5.15.1'
+
 }
 
 task full_jar(type: Jar, dependsOn: classes) {
