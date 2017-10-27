@@ -35,6 +35,12 @@ public class Main {
                 return;
             }
         } else if(Integer.parseInt(args[0]) == 2){
+
+            if(args.length > 1){
+                System.out.println("Cambiando la cola");
+                cola = args[1];
+            }
+
             Consumidor consumidor=new Consumidor(cola);
             consumidor.conectar();
 
@@ -51,7 +57,7 @@ public class Main {
                 //http://activemq.apache.org/how-do-i-embed-a-broker-inside-a-connection.html
                 BrokerService broker = new BrokerService();
                 //configurando el broker.
-                broker.addConnector("tcp://localhost:61616");
+                broker.addConnector("tcp://0.0.0.0:61616");
                 //Inicializando
                 broker.start();
             }catch (Exception ex){

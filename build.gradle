@@ -20,6 +20,9 @@ dependencies {
 
 }
 
+//Pueden utilizar el https://github.com/johnrengelman/shadow
+
+//Forma custom para generar el jar.
 task full_jar(type: Jar, dependsOn: classes) {
 
     manifest {
