@@ -43,6 +43,7 @@ public class Productor {
 
 
         // Creando el objeto de referencia para enviar los mensajes.
+        //MessageProducer producer = session.createProducer(queue);
         MessageProducer producer = session.createProducer(topic);
 
 

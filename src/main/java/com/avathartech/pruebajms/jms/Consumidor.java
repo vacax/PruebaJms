@@ -60,6 +60,7 @@ public class Consumidor {
         topic = session.createTopic(cola);
 
 
+        //consumer = session.createConsumer(queue);
         consumer = session.createConsumer(topic);
         consumer.setMessageListener(new MessageListener() {
             @Override
