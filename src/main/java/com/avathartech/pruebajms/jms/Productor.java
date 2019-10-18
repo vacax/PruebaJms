@@ -14,13 +14,14 @@ public class Productor {
     }
 
     /**
-     *
+     * Metodo para enviar información a la cola.
      * @param cola
      * @param mensajeEnviar
+     * @param tipoCola
      * @throws Exception
      */
-    public void enviarMensaje(String cola, String mensajeEnviar) throws JMSException {
-
+    public void enviarMensaje(String cola, String mensajeEnviar, TipoCola tipoCola) throws JMSException {
+        System.out.println("Enviando Mensaje - Cola: "+tipoCola.toString());
         //Creando el connection factory indicando el host y puerto, en la trama el failover indica que reconecta de manera
         // automatica
         ActiveMQConnectionFactory factory = new ActiveMQConnectionFactory("tcp://localhost:61616");
@@ -37,14 +38,16 @@ public class Productor {
         // Creamos o nos connectamos a la una cola, por defecto ActiveMQ permite
         // la creación si no existe. Si la cola es del tipo Queue es acumula los mensajes, si es
         // del tipo topic es en el momento.
+        MessageProducer producer =  null;
 
-        //Queue queue = session.createQueue(cola);
-        Topic topic = session.createTopic(cola);
+        if(tipoCola == TipoCola.QUEUE){
+            Queue queue = session.createQueue(cola);
+            producer = session.createProducer(queue);
+        } else{
+            Topic topic = session.createTopic(cola);
+            producer = session.createProducer(topic);
+        }
 
-
-        // Creando el objeto de referencia para enviar los mensajes.
-        //MessageProducer producer = session.createProducer(queue);
-        MessageProducer producer = session.createProducer(topic);
 
 
         String mensaje = mensajeEnviar;

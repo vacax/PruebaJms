@@ -2,6 +2,7 @@ package com.avathartech.pruebajms.main;
 
 import com.avathartech.pruebajms.jms.Consumidor;
 import com.avathartech.pruebajms.jms.Productor;
+import com.avathartech.pruebajms.jms.TipoCola;
 import org.apache.activemq.broker.BrokerService;
 
 import javax.jms.JMSException;
@@ -21,27 +22,31 @@ public class Main {
     public static void main(String[] args) throws IOException, JMSException  {
         System.out.println("Prueba de Mensajeria Asincrona");
         String cola = "pruebajms.cola";
+        TipoCola tipoCola;
 
         if(args.length == 0){
             mensajesParametros();
             return;
         }
 
-        if(Integer.parseInt(args[0]) == 1){
+        int opcion = Integer.parseInt(args[0]);
+        
+        if(opcion == 2 || opcion == 4){
             if(args.length > 1){
-                new Productor().enviarMensaje(cola, args[1]);
+                new Productor().enviarMensaje(cola, args[1], opcion == 2 ? TipoCola.TOPIC : TipoCola.QUEUE);
             }else{
                 System.out.println("Si aplicacion == 1, debe enviar segundo parametro para el mesanje");
                 return;
             }
-        } else if(Integer.parseInt(args[0]) == 2){
+        } else if(opcion == 3 || opcion == 5){
 
             if(args.length > 1){
                 System.out.println("Cambiando la cola");
                 cola = args[1];
             }
 
-            Consumidor consumidor=new Consumidor(cola);
+            //indicando el consumidor con la cola.
+            Consumidor consumidor= new Consumidor(cola, opcion == 3 ? TipoCola.TOPIC : TipoCola.QUEUE);
             consumidor.conectar();
 
             System.out.println("Presiona Enter para salir del programa:");
@@ -50,7 +55,7 @@ public class Main {
             consumidor.cerrarConexion();
             System.exit(0);
 
-        }else if(Integer.parseInt(args[0]) == 3){
+        }else if(opcion == 1){
             System.out.println("Inicializando Servidor JMS");
             try {
                 //Subiendo la versión embedded de ActiveMQ.
@@ -71,12 +76,14 @@ public class Main {
     }
 
     /**
-     *
+     * Mostrando opciones disponible
      */
     private static void mensajesParametros(){
-        System.out.println("Deben enviar los parametros: aplicacion [mensaje]");
-        System.out.println("Si aplicacion == 1, debe enviar segundo parametro para el mesanje");
-        System.out.println("Si aplicacion == 2, sube en modo consumidor");
-        System.out.println("Si aplicacion == 3, Inicializa el modo Embedded");
+        System.out.println("Deben enviar los parametros: modo-aplicacion tipo-cola [mensaje]");
+        System.out.println("Si modo-aplicacion == 1, Inicializa el modo Embedded");
+        System.out.println("Si modo-aplicacion == 2, debe enviar segundo parametro para el mensaje - tipo Cola Topuc");
+        System.out.println("Si modo-aplicacion == 3, sube en modo consumidor cola Topic");
+        System.out.println("Si modo-aplicacion == 4, debe enviar segundo parametro para el mensaje - tipo Cola Queue");
+        System.out.println("Si modo-aplicacion == 5, sube en modo consumidor cola Queue");
     }
 }

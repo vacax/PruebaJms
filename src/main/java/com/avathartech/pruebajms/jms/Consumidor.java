@@ -18,13 +18,15 @@ public class Consumidor {
     Topic topic;
     MessageConsumer consumer;
     String cola;
+    TipoCola tipoCola;
 
 
     /**
      *
      */
-    public Consumidor(String cola) {
+    public Consumidor(String cola, TipoCola tipoCola) {
         this.cola = cola;
+        this.tipoCola = tipoCola;
     }
 
     /**
@@ -32,7 +34,7 @@ public class Consumidor {
      * @throws JMSException
      */
     public void conectar() throws JMSException {
-
+        System.out.println("Tipo de Cola: "+tipoCola.toString());
         //Creando el connection factory indicando el host y puerto, en la trama el failover indica que reconecta de manera
         // automatica
         factory = new ActiveMQConnectionFactory("admin", "admin", "failover:tcp://localhost:61616");
@@ -56,21 +58,20 @@ public class Consumidor {
         // la creación si no existe. Si la cola es del tipo Queue es acumula los mensajes, si es
         // del tipo topic es en el momento.
 
-        //queue = session.createQueue(cola);
-        topic = session.createTopic(cola);
-
-
-        //consumer = session.createConsumer(queue);
-        consumer = session.createConsumer(topic);
-        consumer.setMessageListener(new MessageListener() {
-            @Override
-            public void onMessage(Message message) {
-                try {
-                    TextMessage messageTexto = (TextMessage) message;
-                    System.out.println("El mensaje de texto recibido: " + messageTexto.getText()+" - "+new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Date()));
-                }catch(Exception ex){
-                    ex.printStackTrace();
-                }
+        if(tipoCola == TipoCola.QUEUE) {
+            queue = session.createQueue(cola);
+            consumer = session.createConsumer(queue);
+        }else {
+            topic = session.createTopic(cola);
+            consumer = session.createConsumer(topic);
+        }
+        
+        consumer.setMessageListener(message -> {
+            try {
+                TextMessage messageTexto = (TextMessage) message;
+                System.out.println("El mensaje de texto recibido: " + messageTexto.getText()+" - "+new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Date()));
+            }catch(Exception ex){
+                ex.printStackTrace();
             }
         });
     }
