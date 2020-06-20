@@ -33,7 +33,8 @@ public class Main {
         
         if(opcion == 2 || opcion == 4){
             if(args.length > 1){
-                new Productor().enviarMensaje(cola, args[1], opcion == 2 ? TipoCola.TOPIC : TipoCola.QUEUE);
+                cola = args[1];
+                new Productor().enviarMensaje(cola, args[2], opcion == 2 ? TipoCola.TOPIC : TipoCola.QUEUE);
             }else{
                 System.out.println("Si aplicacion == 1, debe enviar segundo parametro para el mesanje");
                 return;
@@ -81,9 +82,9 @@ public class Main {
     private static void mensajesParametros(){
         System.out.println("Deben enviar los parametros: modo-aplicacion tipo-cola [mensaje]");
         System.out.println("Si modo-aplicacion == 1, Inicializa el modo Embedded");
-        System.out.println("Si modo-aplicacion == 2, debe enviar segundo parametro para el mensaje - tipo Cola Topuc");
+        System.out.println("Si modo-aplicacion == 2, debe enviar 2do parametro nombre cola, 3er parametro para el mensaje - tipo Cola Topic");
         System.out.println("Si modo-aplicacion == 3, sube en modo consumidor cola Topic");
-        System.out.println("Si modo-aplicacion == 4, debe enviar segundo parametro para el mensaje - tipo Cola Queue");
+        System.out.println("Si modo-aplicacion == 4, debe enviar 2do parametro nombre cola, 3er parametro para el mensaje - tipo Cola Queue");
         System.out.println("Si modo-aplicacion == 5, sube en modo consumidor cola Queue");
     }
 }
