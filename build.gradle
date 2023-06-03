@@ -1,14 +1,14 @@
 plugins {
     id 'java'
     id 'application'
-    id 'com.github.johnrengelman.shadow' version '4.0.4'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
 }
 
 group 'com.avatharetch'
 version '1.0-SNAPSHOT'
 
 
-sourceCompatibility = 1.8
+sourceCompatibility = 17
 
 mainClassName = "com.avathartech.pruebajms.main.Main"
 
@@ -17,15 +17,25 @@ repositories {
 }
 
 dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.11'
+    testImplementation platform('org.junit:junit-bom:5.9.1')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
     //compile 'org.apache.activemq:activemq-client:5.11.1'
     // https://mvnrepository.com/artifact/org.apache.activemq/activemq-all
-    compile group: 'org.apache.activemq', name: 'activemq-all', version: '5.15.1'
+    //implementation(group: 'org.apache.activemq', name: 'activemq-all', version: '5.15.14')
+    // https://mvnrepository.com/artifact/org.apache.activemq/activemq-all
+    implementation 'org.apache.activemq:activemq-all:5.18.1'
+    // https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-api
+    implementation 'org.apache.logging.log4j:log4j-api:2.20.0'
+    implementation 'org.apache.logging.log4j:log4j-core:2.20.0'
+
+    implementation("com.fasterxml.jackson.core:jackson-core:2.15.2")
+    implementation('com.fasterxml.jackson.core:jackson-databind:2.15.2')
+    implementation("com.fasterxml.jackson.core:jackson-annotations:2.15.2")
 
 }
 
 shadowJar {
-    baseName = 'prueba-jms'
-    classifier = null
-    version = null
+    archiveBaseName.set('prueba-jms')
+    archiveClassifier.set('')
+    archiveVersion.set('')
 }

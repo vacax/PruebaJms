@@ -63,9 +63,15 @@ public class Main {
                 //http://activemq.apache.org/how-do-i-embed-a-broker-inside-a-connection.html
                 BrokerService broker = new BrokerService();
                 //configurando el broker.
+                broker.getSystemUsage().getStoreUsage().setLimit(0);
                 broker.addConnector("tcp://0.0.0.0:61616");
                 //Inicializando
                 broker.start();
+                broker.waitUntilStarted();
+                //
+                Scanner s = new Scanner(System.in);
+                String dato = s.nextLine();
+                System.exit(0);
             }catch (Exception ex){
                 ex.printStackTrace();
             }

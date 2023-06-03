@@ -1,9 +1,13 @@
 # Aplicación Prueba JMS - ActiveMQ
-Software para probar las colas de publicación y subcripción 
-con el servidor Apache ActiveMQ.
+Software para probar las colas de publicación y subcripción con el servidor Apache ActiveMQ.
+
+## Versiones de la aplicación:
+
+* Java 17
+* ActiveMQ 5.15.14
 
 ## Ejecutar:
-* ./gradlew task shadowjar
+* ./gradlew task shadowjar && cd build/libs/
 * java -jar prueba-jms.jar 1 //**Inicio del servidor**
 * java -jar prueba-jms.jar 2 //**Cliente para publicar mensaje - Cola Topic** 
 * java -jar prueba-jms.jar 3 //**Inicio de cliente subcriptor - Cola Topic** 
